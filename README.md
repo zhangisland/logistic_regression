@@ -14,4 +14,4 @@
 1. 仅使用numpy矩阵运算库实现
 2. 给出train训练集和valid验证集的准确率：运行后有终端输出和文件输出（./output/accuracy.txt）
 3. 根据每次迭代的loss绘制train和valid的loss曲线图，横坐标为iterations，纵坐标为loss：（./output/loss.jpg）
-4. 完成后请将源代码和补充完整的testset.json一起打包发送到微信群：补充完整的testset.json（./data/fill-testset.json）
+4. 完成后请将源代码和补充完整的testset.json一起打包发送到微信群：补充完整的testset.json（./output/fill-testset.json）

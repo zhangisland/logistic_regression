@@ -45,7 +45,7 @@ def h_func(_x, _weights):
     return math.e**(np.dot(_x, _weights))/(1.+math.e**(np.dot(_x, _weights)))
 
 
-def gradient_descent(x, y, weights, learning_rate=0.001, max_iter=1000, debug=True, for_train=False):
+def gradient_descent(x, y, weights, learning_rate=0.001, max_iter=1000, debug=True):
     """
     梯度下降逻辑回归，得到权重矩阵
     :param x: vectors_list
@@ -121,7 +121,7 @@ def draw_graph(_loss1, _loss2, _iter):
     y_axis_train = _loss1
     y_axis_dev = _loss2
 
-    x_ticks = [i*100 for i in range(11)]
+    x_ticks = [(_iter//10)*i for i in range(11)]
 
     ax.set_xlabel('iterations')
     ax.set_ylabel('loss')
@@ -137,7 +137,7 @@ def draw_graph(_loss1, _loss2, _iter):
 def fill_testset(_x, _weight):
     pred_labels = pred_classification(_x=_x, _weights=_weight)
 
-    fill_testset = './data/fill-testset.json'
+    fill_testset = './output/fill-testset.json'
     testset_fp = open(file=fill_testset, mode='w+')
     fill_list = []
     vecs_list = []
@@ -159,14 +159,14 @@ def test_gd():
     test_file = './data/testset.json'
 
     acc_path = './output/accuracy.txt'
-    acc_file = open(acc_path, 'w+')
+    acc_file = open(acc_path, 'a+')
 
     train_vectors, train_labels = process_data(_file=train_file, _flag=0)
     dev_vectors, dev_labels = process_data(_file=dev_file, _flag=0)
     test_vectors = process_data(_file=test_file, _flag=1)
 
     # use trainset to get weights matrix
-    lr = 0.001
+    lr = 0.0001
     max_iter = 1000
     m, n = test_vectors.shape
     _weight = np.random.random(n)
@@ -174,12 +174,12 @@ def test_gd():
                                           y=train_labels,
                                           weights=_weight,
                                           learning_rate=lr,
-                                          max_iter=max_iter,
-                                          for_train=True)
+                                          max_iter=max_iter)
+
+    # requirement 2: 给出train训练集和valid验证集的准确率
     pred_labels_train = pred_classification(_x=train_vectors, _weights=weight)
     pred_labels_dev = pred_classification(_x=dev_vectors, _weights=weight)
 
-    # requirement 2: 给出train训练集和valid验证集的准确率
     acc_train = get_acc(old_labels=train_labels, new_labels=pred_labels_train)
     acc_dev = get_acc(old_labels=dev_labels, new_labels=pred_labels_dev)
     print("accuracy of trainset: {:.2%}\naccuracy of devset: {:.2%}\n".format(acc_train, acc_dev))
@@ -196,7 +196,7 @@ def test_gd():
                                         max_iter=max_iter)
     draw_graph(_loss1=loss_train, _loss2=loss_dev, _iter=max_iter)
 
-    # 将testset.json补充完整
+    # requirement 4: 将testset.json补充完整
     fill_testset(_x=test_vectors, _weight=weight)
 
 
