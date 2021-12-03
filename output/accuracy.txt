@@ -1,0 +1,4 @@
+max_iteration = 1000
+learning_rate = 0.001
+accuracy of trainset: 82.20%
+accuracy of devset: 81.50%
